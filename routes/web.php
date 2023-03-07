@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', UserController::class);
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('user/create', 'create');
+    Route::get('user/delete', 'delete');
+    Route::get('user/{opcion}', 'index');
 });
+
+Route::get('auth', [AuthController::class, 'index']);
