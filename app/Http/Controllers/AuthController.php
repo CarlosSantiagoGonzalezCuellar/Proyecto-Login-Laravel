@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\respuestas;
 
 class AuthController extends Controller
 {
@@ -12,7 +13,10 @@ class AuthController extends Controller
             echo "Metodo POST valido";
 
         } else {
-            echo "Metodo no valido";
+            $_respuestas = new respuestas;
+            header("Content-Type: application/json");
+            $datosArray = $_respuestas->error_405();
+            echo json_encode($datosArray);
         }
     }
 }

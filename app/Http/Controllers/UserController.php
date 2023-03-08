@@ -3,16 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Http\Controllers\respuestas;
+
 
 class UserController extends Controller
 {
     public function __invoke()
     {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            echo "Metodo GET valido";
+            if (isset($_GET["id"])) {
+                $usuarioId = $_GET["id"];
+                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.estado')
+                    ->join('roles', 'users.rol', '=', 'roles.id')
+                    ->where('estado', '1')
+                    ->where('users.id', $usuarioId)
+                    ->get();
+                header("Content-Type: application/json");
+                http_response_code(200);
+            } else {
+                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.estado')
+                    ->join('roles', 'users.rol', '=', 'roles.id')
+                    ->where('users.estado', '1')
+                    ->get();
+                header("Content-Type: application/json");
+                http_response_code(200);
+            }
 
+            return response()->json($users);
         } else {
-            echo "Metodo no valido";
+            $_respuestas = new respuestas;
+            header("Content-Type: application/json");
+            $datosArray = $_respuestas->error_405();
+            echo json_encode($datosArray);
         }
     }
 
@@ -20,16 +43,34 @@ class UserController extends Controller
     {
         if ($opcion == "1") {
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
-                echo "Metodo GET valido";
+                if (isset($_GET["id"])) {
+                    $usuarioId = $_GET["id"];
+                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.estado')
+                        ->join('roles', 'users.rol', '=', 'roles.id')
+                        ->where('estado', '1')
+                        ->where('users.id', $usuarioId)
+                        ->get();
+                } else {
+                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.estado')
+                        ->join('roles', 'users.rol', '=', 'roles.id')
+                        ->where('estado', '1')
+                        ->get();
+                }
+                return response()->json($users);
             } else {
-                echo "Metodo no valido";
+                $_respuestas = new respuestas;
+                header("Content-Type: application/json");
+                $datosArray = $_respuestas->error_405();
+                echo json_encode($datosArray);
             }
-
         } elseif ($opcion == "2") {
             if ($_SERVER["REQUEST_METHOD"] == "PATCH") {
                 echo "Metodo PATCH valido";
             } else {
-                echo "Metodo no valido";
+                $_respuestas = new respuestas;
+                header("Content-Type: application/json");
+                $datosArray = $_respuestas->error_405();
+                echo json_encode($datosArray);
             }
         }
     }
@@ -38,9 +79,11 @@ class UserController extends Controller
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Metodo POST valido";
-
         } else {
-            echo "Metodo no valido";
+            $_respuestas = new respuestas;
+            header("Content-Type: application/json");
+            $datosArray = $_respuestas->error_405();
+            echo json_encode($datosArray);
         }
     }
 
@@ -48,9 +91,11 @@ class UserController extends Controller
     {
         if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
             echo "Metodo DELETE valido";
-
         } else {
-            echo "Metodo no valido";
+            $_respuestas = new respuestas;
+            header("Content-Type: application/json");
+            $datosArray = $_respuestas->error_405();
+            echo json_encode($datosArray);
         }
     }
 }
