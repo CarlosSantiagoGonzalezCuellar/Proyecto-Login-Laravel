@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:33065
--- Tiempo de generación: 08-03-2023 a las 20:50:51
+-- Tiempo de generación: 11-03-2023 a las 18:23:50
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -140,7 +140,13 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `nombre`, `rol`, `estado`, `created_at`, `updated_at`) VALUES
 (31, 'Santiago Cuellar', 1, 1, '2023-03-08 23:23:04', '2023-03-08 23:23:04'),
 (32, 'Ronald Perdomo', 2, 1, '2023-03-08 23:23:46', '2023-03-08 23:23:46'),
-(33, 'Javier Cuellar', 2, 0, '2023-03-08 23:28:06', '2023-03-08 23:28:06');
+(33, 'Javier Cuellar', 2, 0, '2023-03-08 23:28:06', '2023-03-08 23:28:06'),
+(34, 'Cristian Castro', 2, 1, '2023-03-11 20:51:23', '2023-03-11 20:51:23'),
+(35, 'Harlen Castillo', 2, 1, '2023-03-11 20:54:09', '2023-03-11 20:54:09'),
+(36, 'Marcela Cuellar', 1, 1, '2023-03-11 21:04:12', '2023-03-11 21:04:12'),
+(37, 'Sebastian Gomez', 1, 1, '2023-03-11 21:16:39', '2023-03-11 21:16:39'),
+(38, 'Juan Pablo Torres', 1, 1, '2023-03-11 21:22:50', '2023-03-11 21:22:50'),
+(39, 'Tatay Torres', 1, 1, '2023-03-11 21:24:19', '2023-03-11 22:15:30');
 
 --
 -- Índices para tablas volcadas
@@ -225,7 +231,7 @@ ALTER TABLE `tokens`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- Restricciones para tablas volcadas

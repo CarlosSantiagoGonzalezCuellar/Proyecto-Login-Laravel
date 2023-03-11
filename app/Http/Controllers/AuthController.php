@@ -7,10 +7,11 @@ use App\Http\Controllers\respuestas;
 
 class AuthController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Metodo POST valido";
+            $data = json_decode($request->getContent());
 
         } else {
             $_respuestas = new respuestas;
