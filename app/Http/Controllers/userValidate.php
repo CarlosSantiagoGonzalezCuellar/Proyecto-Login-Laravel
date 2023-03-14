@@ -135,6 +135,65 @@ class userValidate extends Controller
         // }
     }
 
+
+    //<-- ========== METODO DELETE CON VALIDACIONES ========== -->
+    public function delete($json)
+    {
+        $_respuestas = new respuestas;
+        $_token = new Token;
+        $_user = new User;
+        $datos = json_decode($json, true);
+
+        // if (!isset($datos["token"])) {
+        //     return $_respuestas->error_401();
+        // } else {
+        //     $this->token = $datos["token"];
+        //     if ($_token->validarToken($this->token) == true) {
+                if (!isset($datos["id"])) {
+                    return $_respuestas->error_400();
+                } else {
+                    $this->usuarioId = $datos["id"];
+                    $this->estado = "0";
+
+                    $_user = User::find($this->usuarioId);
+                    $resultArray = array();
+
+                    foreach ($_user as $key) {
+                        $resultArray[] = $key;
+                    }
+                    $datos = $this->convertirUtf8($resultArray);
+
+                    if ($datos) {
+                        $_user->estado = $this->estado;
+                        $_user->save();
+                        $respu = $_user;
+
+                        if ($respu) {
+                            $resp = $respu;
+                        } else {
+                            $resp = 0;
+                        }
+
+                        if ($resp) {
+                            $respuesta = $_respuestas->response;
+                            $respuesta["result"] = array(
+                                "id" => $this->usuarioId
+                            );
+                            return $respuesta;
+                        } else {
+                            return $_respuestas->error_500();
+                        }
+                    } else {
+                        return $_respuestas->error_200("Usuario inactivo!!");
+                    }
+                }
+        //     } else {
+        //         return $_respuestas->error_401("El token enviado es invalido o ha caducado!!");
+        //     }
+        // }
+    }
+
+
     //<!-- ========== METODO PARA CONVERTIR A UTF8 ========== -->
     public function convertirUtf8($array)
     {
@@ -146,3 +205,5 @@ class userValidate extends Controller
         return $array;
     }
 }
+
+
