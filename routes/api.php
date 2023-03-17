@@ -20,13 +20,15 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/', UserController::class);
 
-Route::controller(UserController::class)->group(function () {
-    Route::post('user/create', 'create');
-    Route::delete('user/delete', 'delete');
-    Route::get('user/{opcion}', 'index');
-    Route::patch('user/{opcion}', 'index');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/', UserController::class);
+    Route::controller(UserController::class)->group(function () {
+        Route::post('user/create', 'create');
+        Route::delete('user/delete', 'delete');
+        Route::get('user/{opcion}', 'index');
+        Route::patch('user/{opcion}', 'index');
+    });
 });
 
 Route::post('auth', [AuthController::class, 'index']);

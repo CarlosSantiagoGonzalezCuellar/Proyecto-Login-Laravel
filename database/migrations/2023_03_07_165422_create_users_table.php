@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->integer('rol')->index();
+            $table->string('correo');
+            $table->string('password');
             $table->integer('estado');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
