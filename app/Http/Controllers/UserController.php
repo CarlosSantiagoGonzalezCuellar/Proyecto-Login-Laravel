@@ -17,17 +17,15 @@ class UserController extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (isset($_GET["id"])) {
                 $usuarioId = $_GET["id"];
-                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password', 'users.estado')
+                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password')
                     ->join('roles', 'users.rol', '=', 'roles.id')
-                    ->where('estado', '1')
                     ->where('users.id', $usuarioId)
                     ->get();
                 header("Content-Type: application/json");
                 http_response_code(200);
             } else {
-                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password', 'users.estado')
+                $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password')
                     ->join('roles', 'users.rol', '=', 'roles.id')
-                    ->where('users.estado', '1')
                     ->get();
                 header("Content-Type: application/json");
                 http_response_code(200);
@@ -52,15 +50,13 @@ class UserController extends Controller
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (isset($_GET["id"])) {
                     $usuarioId = $_GET["id"];
-                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password', 'users.estado')
+                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password')
                         ->join('roles', 'users.rol', '=', 'roles.id')
-                        ->where('estado', '1')
                         ->where('users.id', $usuarioId)
                         ->get();
                 } else {
-                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password', 'users.estado')
+                    $users = User::select('users.id', 'users.nombre', 'roles.nombreRol', 'users.correo', 'users.password')
                         ->join('roles', 'users.rol', '=', 'roles.id')
-                        ->where('estado', '1')
                         ->get();
                 }
                 return response()->json($users);

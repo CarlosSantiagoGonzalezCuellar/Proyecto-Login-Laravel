@@ -12,7 +12,6 @@ class userValidate extends Controller
     private $usuarioId = "";
     private $nombre = "";
     private $rol = "";
-    private $estado = "";
     private $correo = "";
     private $password = "";
 
@@ -30,13 +29,11 @@ class userValidate extends Controller
             $this->rol = $datos["rol"];
             $this->correo = $datos["correo"];
             $this->password = $datos["password"];
-            $this->estado = "1";
 
             $_user->nombre = $this->nombre;
             $_user->rol = $this->rol;
             $_user->correo = $this->correo;
             $_user->password = Hash::make($this->password);
-            $_user->estado = $this->estado;
             $_user->save();
             $respu = $_user;
             if ($respu["id"]) {
@@ -44,7 +41,6 @@ class userValidate extends Controller
             } else {
                 $resp = 0;
             }
-
 
             if ($resp != null) {
                 $resp = $resp;
@@ -88,9 +84,7 @@ class userValidate extends Controller
             if (isset($datos["rol"])) {
                 $this->rol = $datos["rol"];
             }
-            $this->estado = "1";
 
-            User::find($this->usuarioId)->delete();
             $_user = User::find($this->usuarioId);
             $resultArray = array();
 
@@ -104,7 +98,6 @@ class userValidate extends Controller
                 $_user->rol = $this->rol;
                 $_user->correo = $this->correo;
                 $_user->password = Hash::make($this->password);
-                $_user->estado = $this->estado;
                 $_user->save();
                 $respu = $_user;
                 if ($respu) {
@@ -133,46 +126,21 @@ class userValidate extends Controller
     public function delete($json)
     {
         $_respuestas = new respuestas;
-        $_user = new User;
         $datos = json_decode($json, true);
 
         if (!isset($datos["id"])) {
             return $_respuestas->error_400();
         } else {
             $this->usuarioId = $datos["id"];
-            $this->estado = "0";
 
             $_user = User::find($this->usuarioId);
-            $resultArray = array();
+            $_user->delete();
 
-            foreach ($_user as $key) {
-                $resultArray[] = $key;
-            }
-            $datos = $this->convertirUtf8($resultArray);
-
-            if ($datos) {
-                $_user->estado = $this->estado;
-                $_user->save();
-                $respu = $_user;
-
-                if ($respu) {
-                    $resp = $respu;
-                } else {
-                    $resp = 0;
-                }
-
-                if ($resp) {
-                    $respuesta = $_respuestas->response;
-                    $respuesta["result"] = array(
-                        "id" => $this->usuarioId
-                    );
-                    return $respuesta;
-                } else {
-                    return $_respuestas->error_500();
-                }
-            } else {
-                return $_respuestas->error_200("Usuario inactivo!!");
-            }
+            $respuesta = $_respuestas->response;
+            $respuesta["result"] = array(
+                "id" => $this->usuarioId
+            );
+            return $respuesta;
         }
     }
 

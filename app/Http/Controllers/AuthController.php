@@ -28,18 +28,6 @@ class AuthController extends Controller
             }
             echo json_encode($datosArray);
 
-            // if (!Auth::attempt($request->only('correo', 'password'))) {
-            //     return $_respuestas->error_401();
-            // } else {
-                // $_user = User::where('correo', $request['correo'])->firstOrFail();
-                // $token = $_user->createToken('auth_token')->plainTextToken;
-
-                // $result = $_respuestas->response;
-
-                // $result["result"] = array(
-                //     "token" => $token
-                // );
-            // }
         } else {
             $_respuestas = new respuestas;
             header("Content-Type: application/json");

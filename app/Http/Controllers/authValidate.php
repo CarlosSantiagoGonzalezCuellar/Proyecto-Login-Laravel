@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class authValidate extends Controller
 {
@@ -15,7 +15,7 @@ class authValidate extends Controller
         $datos = json_decode($json, true);
         if (!isset($datos["correo"]) || !isset($datos["password"])) {
             // Error en los campos
-            return $_respuestas->error_400();
+            return $_respuestas->error_401();
         } else {
             $correo = $datos["correo"];
             $password = $datos["password"];
@@ -31,27 +31,22 @@ class authValidate extends Controller
 
             if ($datos) {
                 // Verificar si la contraseña es igual
-                if ($password == $_user["password"]) {
-                    if ($_user["estado"] == "1") {
-                        $token = $_user->createToken('auth_token')->plainTextToken;
-                        if ($token) {
-                            $result = $_respuestas->response;
+                if (Hash::check($password, $_user["password"])) {
+                    $token = $_user->createToken('auth_token')->plainTextToken;
+                    if ($token) {
+                        $result = $_respuestas->response;
 
-                            $result["result"] = array(
-                                "token" => $token,
-                                "id" => $_user["id"],
-                                "nombre" => $_user["nombre"],
-                                "rol" => $_user["rol"]
-                            );
+                        $result["result"] = array(
+                            "token" => $token,
+                            "id" => $_user["id"],
+                            "nombre" => $_user["nombre"],
+                            "rol" => $_user["rol"]
+                        );
 
-                            return $result;
-                        } else {
-                            //No se guardo
-                            return $_respuestas->error_500("Error interno, no se ha podido guardar!!");
-                        }
+                        return $result;
                     } else {
-                        //Usuario inactivo
-                        return $_respuestas->error_200("Usuario inactivo!!");
+                        //No se guardo
+                        return $_respuestas->error_500("Error interno, no se ha podido guardar!!");
                     }
                 } else {
                     //Contraseña incorrecta
